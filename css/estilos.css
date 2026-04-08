@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0b1f3a, #1c3d6e);
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Logo AIEP */
+.logo {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    width: 120px;
+    opacity: 0.9;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 600px;
+    margin: 80px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Títulos */
+h2 {
+    text-align: center;
+    color: #0b1f3a;
+}
+
+h3 {
+    color: #1c3d6e;
+}
+
+/* Inputs */
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #1c3d6e;
+    outline: none;
+}
+
+/* Botones */
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1c3d6e;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #0b1f3a;
+}
+
+/* Resultado búsqueda */
+#resultado {
+    margin-top: 10px;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 6px;
+}
