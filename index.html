@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ficha Médica</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f4f4;
+    margin: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 10px;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Ficha Médica</h2>
+
+    <input type="text" id="rut" placeholder="RUT">
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="apellido" placeholder="Apellido">
+    <input type="text" id="direccion" placeholder="Dirección">
+    <input type="text" id="ciudad" placeholder="Ciudad">
+    <input type="text" id="telefono" placeholder="Teléfono">
+    <input type="email" id="email" placeholder="Email">
+    <input type="date" id="fecha">
+    
+    <select id="estado">
+        <option value="">Estado Civil</option>
+        <option>Soltero</option>
+        <option>Casado</option>
+    </select>
+
+    <textarea id="comentarios" placeholder="Comentarios"></textarea>
+
+    <button onclick="guardar()">Guardar</button>
+    <button onclick="limpiar()">Limpiar</button>
+    <button onclick="cerrarApp()">Cerrar</button>
+
+    <hr>
+
+    <h3>Buscar por Apellido</h3>
+    <input type="text" id="buscar" placeholder="Apellido">
+    <button onclick="buscar()">Buscar</button>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+
+function obtenerDatos() {
+    return {
+        rut: document.getElementById("rut").value,
+        nombre: document.getElementById("nombre").value,
+        apellido: document.getElementById("apellido").value,
+        direccion: document.getElementById("direccion").value,
+        ciudad: document.getElementById("ciudad").value,
+        telefono: document.getElementById("telefono").value,
+        email: document.getElementById("email").value,
+        fecha: document.getElementById("fecha").value,
+        estado: document.getElementById("estado").value,
+        comentarios: document.getElementById("comentarios").value
+    };
+}
+
+function validar(datos) {
+    if (!datos.rut || !datos.nombre || !datos.apellido) {
+        alert("Completa los campos obligatorios");
+        return false;
+    }
+
+    if (!datos.email.includes("@")) {
+        alert("Email inválido");
+        return false;
+    }
+
+    return true;
+}
+
+function guardar() {
+    let datos = obtenerDatos();
+
+    if (!validar(datos)) return;
+
+    let registros = JSON.parse(localStorage.getItem("pacientes")) || [];
+
+    let existe = registros.find(r => r.rut === datos.rut);
+
+    if (existe) {
+        if (!confirm("El registro ya existe. ¿Desea sobrescribir?")) {
+            return;
+        }
+        registros = registros.filter(r => r.rut !== datos.rut);
+    }
+
+    registros.push(datos);
+    localStorage.setItem("pacientes", JSON.stringify(registros));
+
+    alert("Guardado correctamente");
+    limpiar();
+}
+
+function limpiar() {
+    document.querySelectorAll("input, textarea").forEach(e => e.value = "");
+    document.getElementById("estado").value = "";
+}
+
+function cerrarApp() {
+    document.body.innerHTML = "<h2>Aplicación cerrada</h2>";
+}
+
+function buscar() {
+    let apellido = document.getElementById("buscar").value.toLowerCase();
+    let registros = JSON.parse(localStorage.getItem("pacientes")) || [];
+
+    let resultados = registros.filter(r => 
+        r.apellido.toLowerCase().includes(apellido)
+    );
+
+    let html = "<h4>Resultados:</h4>";
+
+    resultados.forEach(r => {
+        html += `<p>${r.nombre} ${r.apellido} - ${r.rut}</p>`;
+    });
+
+    if (resultados.length === 0) {
+        html += "<p>No encontrado</p>";
+    }
+
+    document.getElementById("resultado").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
